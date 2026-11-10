@@ -1,0 +1,22 @@
+const express = require("express")
+const cors = require("cors")
+const qs = require("qs")
+const swaggerUi = require("swagger-ui-express")
+const env = require("./config/env")
+const routes = require("./routes")
+const swaggerDocument = require("./docs/swagger")
+const { notFound, errorHandler } = require("./middleware/errorHandler")
+
+const app = express()
+app.set("query parser", (query) => qs.parse(query, { parseArrays: false }))
+app.use(cors({ origin: env.corsOrigin }))
+app.use(express.json({ limit: "20mb" }))
+app.use("/media", express.static(env.uploadDir))
+app.get("/api-docs.json", (req, res) => res.json(swaggerDocument))
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.get("/", (req, res) => res.json({ name: "Digital Store API", docs: "/api-docs" }))
+app.use("/v1", routes)
+app.use(notFound)
+app.use(errorHandler)
+
+module.exports = app
