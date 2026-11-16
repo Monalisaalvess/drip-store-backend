@@ -24,7 +24,7 @@ npm run dev
 # ou: npm start
 ```
 
-A API sobe em `http://localhost:3000` e a **documentação Swagger** fica em `http://localhost:3000/api-docs`.
+A API sobe em `http://localhost:3000` e a **documentação Swagger** em `http://localhost:3000/api-docs`.
 
 O seed cria 5 categorias, 8 produtos (com opções de tamanho e cor) e o usuário de teste **`admin@digitalstore.com` / `123456`**.
 
