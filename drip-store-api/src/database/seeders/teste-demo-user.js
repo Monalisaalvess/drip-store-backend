@@ -4,6 +4,8 @@ const EMAIL = "admin@digitalstore.com"
 module.exports = {
   async up(queryInterface) {
     const now = new Date()
+
+//usuário administrador
     await queryInterface.bulkInsert("users", [
       {
         firstname: "Admin",
@@ -16,6 +18,8 @@ module.exports = {
     ])
   },
   async down(queryInterface) {
+    
+//remove o administrador cadatrado por esta seed
     await queryInterface.bulkDelete("users", { email: EMAIL })
   },
 }

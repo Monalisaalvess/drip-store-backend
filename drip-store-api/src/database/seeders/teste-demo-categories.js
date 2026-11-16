@@ -1,8 +1,12 @@
 "use strict"
+
+// Slugs utilizados para identificar as categorias inseridas na migration.
 const slugs = ["camisetas", "calcas", "bones", "headphones", "tenis"]
 module.exports = {
   async up(queryInterface) {
     const now = new Date()
+
+// Insere as categorias iniciais disponíveis no catálogo.
     await queryInterface.bulkInsert("categories", [
       { name: "Camisetas", slug: "camisetas", use_in_menu: true, created_at: now, updated_at: now },
       { name: "Calças", slug: "calcas", use_in_menu: true, created_at: now, updated_at: now },
@@ -12,6 +16,8 @@ module.exports = {
     ])
   },
   async down(queryInterface, Sequelize) {
+
+// Remove apenas as categorias inseridas por esta migration.
     await queryInterface.bulkDelete("categories", { slug: { [Sequelize.Op.in]: slugs } })
   },
 }

@@ -17,6 +17,7 @@ module.exports = {
       type: { type: Sequelize.ENUM("text", "color"), allowNull: true, defaultValue: "text" },
       values: { type: Sequelize.STRING(1000), allowNull: false },
     })
+// Otimiza a consulta das opções vinculadas a um produto.
     await queryInterface.addIndex("product_options", ["product_id"])
   },
   async down(queryInterface) {

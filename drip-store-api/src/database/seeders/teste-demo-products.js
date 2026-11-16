@@ -1,5 +1,6 @@
 "use strict"
 
+// Dados dos produtos utilizados na carga inicial do catálogo.
 const products = [
   ["Air Jordan 1 Mid Masculino", "air-jordan-1-mid-masculino", 200, 149.9],
   ["Air Jordan 1 Chicago Masculino", "air-jordan-1-chicago-masculino", 349.9, 349.9],
@@ -11,6 +12,7 @@ const products = [
   ["Sapatênis Levi's Marrom Unissex", "sapatenis-levis-marrom-unissex", 239.9, 199.9],
 ]
 
+// Descrição padrão aplicada aos produtos cadastrados pela seed.
 const DESCRIPTION =
   "Descrição do produto. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 
@@ -18,6 +20,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const now = new Date()
 
+//Insere os produtos iniciais no catálogo
     await queryInterface.bulkInsert(
       "products",
       products.map(([name, slug, price, price_with_discount]) => ({
@@ -35,6 +38,8 @@ module.exports = {
     )
 
     const slugs = products.map((p) => p[1])
+
+//recupera o IDs dos produtos e da categoria para criar os relacionamentos
     const rows = await queryInterface.sequelize.query("SELECT id FROM products WHERE slug IN (:slugs)", {
       replacements: { slugs },
       type: Sequelize.QueryTypes.SELECT,
@@ -43,6 +48,7 @@ module.exports = {
       type: Sequelize.QueryTypes.SELECT,
     })
 
+//Define as opções de tamanho e cor disponíveis para cada produto.
     await queryInterface.bulkInsert(
       "product_options",
       rows.flatMap(({ id }) => [
@@ -51,6 +57,7 @@ module.exports = {
       ])
     )
 
+// Vincula os produtos à categoria de tênis quando ela estiver cadastrada.
     if (category) {
       await queryInterface.bulkInsert(
         "product_categories",
@@ -60,6 +67,8 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
+
+// Remove os produtos inseridos por esta seed, identificados pelos respectivos slugs.
     await queryInterface.bulkDelete("products", { slug: { [Sequelize.Op.in]: products.map((p) => p[1]) } })
   },
 }

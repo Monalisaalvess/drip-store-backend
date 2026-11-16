@@ -1,4 +1,6 @@
+//carrega as variáveis de ambiente definidas no .env
 require("dotenv").config({ quiet: true })
+//configura as conexões com o db mySQL
 const mysql = {
   dialect: "mysql",
   host: process.env.DB_HOST || "localhost",
@@ -9,7 +11,7 @@ const mysql = {
   logging: false,
   define: { underscored: true },
 }
-
+//exporta as configurações de acordo com o ambiente de execução
 module.exports = {
   development: mysql,
   production: mysql,

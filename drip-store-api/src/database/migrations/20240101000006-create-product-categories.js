@@ -20,6 +20,7 @@ module.exports = {
         onUpdate: "CASCADE",
       },
     })
+  // Otimiza consultas e filtros realizados pelo identificador da categoria.
     await queryInterface.addIndex("product_categories", ["category_id"])
   },
   async down(queryInterface) {

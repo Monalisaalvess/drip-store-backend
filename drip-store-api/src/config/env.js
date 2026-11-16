@@ -1,8 +1,10 @@
+//carrega as variáveis de ambiente definidas no .env
 require("dotenv").config({ quiet: true })
 const path = require("path")
-
+//verifica se a aplicação está sendo executada em ambiente de teste
 const isTest = process.env.NODE_ENV === "test"
-const port = Number(process.env.PORT) || 3000
+//porta do servidor
+const port = Number(process.env.PORT) || 3000  
 
 module.exports = {
   isTest,

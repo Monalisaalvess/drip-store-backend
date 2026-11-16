@@ -74,6 +74,7 @@ async function getById(id) {
   return serialize(product)
 }
 
+// Interseção dos IDs garante que o produto atenda simultaneamente a todos os filtros.
 const intersect = (sets) => sets.reduce((acc, set) => acc.filter((id) => set.includes(id)))
 
 async function search({ limit, page, fields, match, category_ids, "price-range": range, option }) {
@@ -83,6 +84,8 @@ async function search({ limit, page, fields, match, category_ids, "price-range":
     conditions.push({ [Op.or]: [{ name: { [Op.like]: `%${match}%` } }, { description: { [Op.like]: `%${match}%` } }] })
   }
   if (range) {
+
+// Prioriza o preço promocional quando disponível; caso contrário, utiliza o preço original.
     const effectivePrice = fn("COALESCE", fn("NULLIF", col("price_with_discount"), 0), col("price"))
     conditions.push(sqlWhere(effectivePrice, { [Op.between]: range }))
   }

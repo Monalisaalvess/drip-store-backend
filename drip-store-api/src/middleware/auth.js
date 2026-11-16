@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken")
 const env = require("../config/env")
 const AppError = require("../utils/AppError")
+
+// Valida o token Bearer e disponibiliza os dados do usuário autenticado em req.user.
 module.exports = function auth(req, res, next) {
   const header = req.headers.authorization || ""
   const [scheme, token] = header.split(" ")
